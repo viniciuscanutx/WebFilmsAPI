@@ -1,0 +1,7 @@
+        "id":str(item["_id"]),
+        "title":item["title"],
+        "banner":item["banner"],
+        "poster":item["poster"],
+        "overview":item["overview"],
+        "runtime":item["runtime"],
+        "revenue":item["revenue"]
