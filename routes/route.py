@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from models.model import Films
 from config.db import conn
+from pymongo.collection import Collection
 from schemas.schema import serializeDict, serializeList
 from bson import ObjectId
 
@@ -14,6 +15,13 @@ async def main():
 @user.get('/found')
 async def Encontrar_Todos_Filmes():
     return serializeList(conn.filmes.filmes.find())
+
+@user.get('/search')
+async def procurar_filme(title: str):
+    filmes_collection: Collection = conn.filmes.filmes
+    results = filmes_collection.find({"title": {"$regex": title, "$options": "i"}})  
+    filmes = serializeList(results)
+    return filmes if filmes else {"message": "Nenhum filme encontrado."}
 
 @user.get('/{iid}')
 async def Encontrar_Filme(iid):
