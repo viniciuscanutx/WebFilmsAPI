@@ -1,11 +1,16 @@
 def serializeDict(item) -> dict:
     return {
         "id":str(item["_id"]),
-        "title":item["title"],
+        "imdbid":item["imdbid"],
+        "titulo":item["titulo"],
+        "sinopse":item["sinopse"],
+        "lancamento":item["lancamento"],
+        "genero":item["genero"],
+        "renda":item["renda"],
+        "nota":item["nota"],
+        "metacritic":item["metacritic"],
+        "rottentomatoes":item["rottentomatoes"],
         "poster":item["poster"],
-        "overview":item["overview"],
-        "runtime":item["runtime"],
-        "voteAverage":item["voteAverage"],
         "link":item["link"]
     }
     

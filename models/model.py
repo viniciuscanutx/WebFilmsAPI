@@ -1,9 +1,14 @@
 from pydantic import BaseModel
 
 class Films(BaseModel):
-    title: str
+    imdbid: str
+    titulo: str
+    sinopse: str
+    lancamento: str
+    genero: str
+    renda: str
+    nota: str
+    metacritic: str
+    rottentomatoes: str
     poster: str
-    overview: str
-    runtime: str
-    voteAverage: str
     link: str

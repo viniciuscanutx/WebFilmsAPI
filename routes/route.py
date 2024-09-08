@@ -17,9 +17,9 @@ async def Encontrar_Todos_Filmes():
     return serializeList(conn.filmes.filmes.find())
 
 @user.get('/search')
-async def procurar_filme(title: str):
+async def procurar_filme(titulo: str):
     filmes_collection: Collection = conn.filmes.filmes
-    results = filmes_collection.find({"title": {"$regex": title, "$options": "i"}})  
+    results = filmes_collection.find({"titulo": {"$regex": titulo, "$options": "i"}})  
     filmes = serializeList(results)
     return filmes if filmes else {"message": "Nenhum filme encontrado."}
 
