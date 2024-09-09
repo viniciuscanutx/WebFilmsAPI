@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException, Query
 from models.model import Films
 from config.db import conn
 from pymongo.collection import Collection
@@ -23,9 +23,20 @@ async def procurar_filme(titulo: str):
     filmes = serializeList(results)
     return filmes if filmes else {"message": "Nenhum filme encontrado."}
 
+@user.get('/category/{categoria}')
+async def comedy_category(categoria: str):
+    filmes_collection: Collection = conn.filmes.filmes
+    results = filmes_collection.find({"categoria": {"$regex": categoria, "$options": "i"}})
+    filmes = serializeList(results)
+    return filmes if filmes else {"message": "Nenhum filme encontrado."}
+
 @user.get('/{iid}')
-async def Encontrar_Filme(iid):
-    return serializeDict(conn.filmes.filmes.find_one({"_id": ObjectId(iid)}))
+async def Encontrar_Filme(iid: str):
+    filme = conn.filmes.filmes.find_one({"_id": ObjectId(iid)})
+    if filme:
+        return serializeDict(filme)
+    else:
+        raise HTTPException(status_code=404, detail="Filme não encontrado")
 
 @user.post('/receive-data')
 async def Adicionar_Filme(user: Films):
@@ -33,12 +44,21 @@ async def Adicionar_Filme(user: Films):
     return serializeList(conn.filmes.filmes.find())
 
 @user.put('/{iid}')
-async def Atualizar_Filme(iid, user: Films):
-    conn.filmes.filmes.find_one_and_update({"_id": ObjectId(iid)}, {
-        "$set": dict(user)
-    })
-    return serializeDict(conn.filmes.filmes.find_one({"_id": ObjectId(iid)}))
+async def Atualizar_Filme(iid: str, user: Films):
+    result = conn.filmes.filmes.find_one_and_update(
+        {"_id": ObjectId(iid)}, 
+        {"$set": dict(user)},
+        return_document=True
+    )
+    if result:
+        return serializeDict(result)
+    else:
+        raise HTTPException(status_code=404, detail="Filme não encontrado")
 
 @user.delete('/{iid}')
-async def Deletar_Filme(iid):
-    return serializeDict(conn.filmes.filmes.find_one_and_delete({"_id": ObjectId(iid)}))
+async def Deletar_Filme(iid: str):
+    result = conn.filmes.filmes.find_one_and_delete({"_id": ObjectId(iid)})
+    if result:
+        return serializeDict(result)
+    else:
+        raise HTTPException(status_code=404, detail="Filme não encontrado")
