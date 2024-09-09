@@ -5,7 +5,10 @@ from pymongo.collection import Collection
 from schemas.schema import serializeDict, serializeList
 from bson import ObjectId
 
-user = APIRouter()
+user = APIRouter(
+    docs_url=None,  
+    redoc_url=None  
+)
 
 @user.head('/')
 @user.get('/')
