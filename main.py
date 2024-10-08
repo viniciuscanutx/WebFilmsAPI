@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes.route import user
+from routes.route import user 
 
-app = FastAPI()
+app = FastAPI(docs_url="/docs")  
 
 app.add_middleware(
     CORSMiddleware,
@@ -14,3 +14,5 @@ app.add_middleware(
 
 
 app.include_router(user)
+
+

@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "FastAPI",
+            "type": "python",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "main:app",  // Substitua 'your_module_name' pelo nome do seu arquivo Python sem a extensão .py
+                "--host", "127.0.0.1",
+                "--port", "8000",
+                "--reload"  // Opcional: use --reload para reiniciar automaticamente ao fazer alterações no código
+            ],
+            "justMyCode": true
+        }
+    ]
+}
