@@ -11,7 +11,8 @@ def serializeDict(item) -> dict:
         "metacritic":item["metacritic"],
         "rottentomatoes":item["rottentomatoes"],
         "poster":item["poster"],
-        "link":item["link"]
+        "link":item["link"],
+        "legenda":item["legenda"]
     }
     
 def serializeList(entity) -> list:

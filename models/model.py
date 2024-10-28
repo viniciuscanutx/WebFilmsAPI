@@ -12,3 +12,4 @@ class Films(BaseModel):
     rottentomatoes: str
     poster: str
     link: str
+    legenda: str
