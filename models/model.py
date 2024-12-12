@@ -14,5 +14,6 @@ class Films(BaseModel):
     metacritic: str
     rottentomatoes: str
     poster: str
+    banner: str
     link: str
     legenda: str

@@ -14,6 +14,7 @@ def serializeDict(item) -> dict:
         "metacritic":item["metacritic"],
         "rottentomatoes":item["rottentomatoes"],
         "poster":item["poster"],
+        "banner":item["banner"],
         "link":item["link"],
         "legenda":item["legenda"]
     }
