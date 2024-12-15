@@ -6,6 +6,7 @@ class Films(BaseModel):
     sinopse: str
     duracao: str
     lancamento: str
+    fulllancamento: str
     genero: str
     diretor: str
     atores: str

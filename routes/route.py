@@ -24,7 +24,7 @@ async def procurar_filme(titulo: str):
     return filmes if filmes else {"message": "Nenhum filme encontrado."}
 
 @user.get('/genero/{genero}')
-async def comedy_category(genero: str):
+async def Categoria_Filme(genero: str):
     filmes_collection: Collection = conn.filmes.filmes
     results = filmes_collection.find({"genero": {"$regex": genero, "$options": "i"}})
     filmes = serializeList(results)
