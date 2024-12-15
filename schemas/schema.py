@@ -6,6 +6,7 @@ def serializeDict(item) -> dict:
         "sinopse":item["sinopse"],
         "duracao":item["duracao"],
         "lancamento":item["lancamento"],
+        "fulllancamento":item["fulllancamento"],
         "genero":item["genero"],
         "diretor":item["diretor"],
         "atores":item["atores"],
