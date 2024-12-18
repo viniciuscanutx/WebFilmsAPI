@@ -38,6 +38,15 @@ async def Encontrar_Filme(iid: str):
     else:
         raise HTTPException(status_code=404, detail="Filme não encontrado")
 
+@user.get('/release-date')
+async def Filmes_Por_Data(ordem: str = Query("asc", regex="^(asc|desc)$")):
+    ordem_sort = 1 if ordem == "asc" else -1
+    filmes_collection: Collection = conn.filmes.filmes
+    results = filmes_collection.find().sort("fulllancamento", ordem_sort)
+    filmes = serializeList(results)
+    return filmes if filmes else {"message": "Nenhum filme encontrado."}
+
+
 @user.post('/receive-data')
 async def Adicionar_Filme(user: Films):
     conn.filmes.filmes.insert_one(dict(user))
