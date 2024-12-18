@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException, Query
 from models.model import Films
 from config.db import conn
 from pymongo.collection import Collection
+from pymongo import ASCENDING, DESCENDING
 from schemas.schema import serializeDict, serializeList
 from bson import ObjectId
 
@@ -15,6 +16,18 @@ async def main():
 @user.get('/found')
 async def Encontrar_Todos_Filmes():
     return serializeList(conn.filmes.filmes.find())
+
+@user.get('/release')
+async def Filmes_Por_Data(ordem: str = Query("asc", regex="^(asc|desc)$")):
+    try:
+        ordem_sort = 1 if ordem == "asc" else -1
+        filmes_collection: Collection = conn.filmes.filmes
+        results = filmes_collection.find({"lancamento": {"$exists": True}}).sort("lancamento", ordem_sort)
+        filmes = serializeList(results)
+        return filmes if filmes else {"message": "Nenhum filme encontrado."}
+    except Exception as e:
+        print(f"Erro inesperado: {e}")
+        raise HTTPException(status_code=500, detail="Erro ao buscar filmes por data de lançamento.")
 
 @user.get('/search')
 async def procurar_filme(titulo: str):
@@ -37,20 +50,6 @@ async def Encontrar_Filme(iid: str):
         return serializeDict(filme)
     else:
         raise HTTPException(status_code=404, detail="Filme não encontrado")
-
-@user.get('/release-date')
-async def Filmes_Por_Data(ordem: str = Query("asc", regex="^(asc|desc)$")):
-    try:
-        ordem_sort = 1 if ordem == "asc" else -1
-        filmes_collection: Collection = conn.filmes.filmes
-        results = filmes_collection.find({"fulllancamento": {"$exists": True}}).sort("fulllancamento", ordem_sort)
-        filmes = serializeList(results)
-        return filmes if filmes else {"message": "Nenhum filme encontrado."}
-    except Exception as e:
-        print(f"Erro inesperado: {e}")
-        raise HTTPException(status_code=500, detail="Erro ao buscar filmes por data de lançamento.")
-
-
 
 @user.post('/receive-data')
 async def Adicionar_Filme(user: Films):
