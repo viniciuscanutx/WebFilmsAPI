@@ -40,11 +40,16 @@ async def Encontrar_Filme(iid: str):
 
 @user.get('/release-date')
 async def Filmes_Por_Data(ordem: str = Query("asc", regex="^(asc|desc)$")):
-    ordem_sort = 1 if ordem == "asc" else -1
-    filmes_collection: Collection = conn.filmes.filmes
-    results = filmes_collection.find().sort("fulllancamento", ordem_sort)
-    filmes = serializeList(results)
-    return filmes if filmes else {"message": "Nenhum filme encontrado."}
+    try:
+        ordem_sort = 1 if ordem == "asc" else -1
+        filmes_collection: Collection = conn.filmes.filmes
+        results = filmes_collection.find({"fulllancamento": {"$exists": True}}).sort("fulllancamento", ordem_sort)
+        filmes = serializeList(results)
+        return filmes if filmes else {"message": "Nenhum filme encontrado."}
+    except Exception as e:
+        print(f"Erro inesperado: {e}")
+        raise HTTPException(status_code=500, detail="Erro ao buscar filmes por data de lançamento.")
+
 
 
 @user.post('/receive-data')
